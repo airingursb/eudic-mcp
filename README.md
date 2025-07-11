@@ -92,7 +92,7 @@ Add this to your MCP client configuration (e.g., Claude Desktop):
   "mcpServers": {
     "eudic": {
       "command": "npx",
-      "args": ["eudic-mcp"],
+      "args": ["-y", "eudic-mcp"],
       "env": {
         "EUDIC_AUTH_TOKEN": "NIS your_token_here"
       }
