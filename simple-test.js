@@ -35,6 +35,12 @@ async function testEudicClient() {
     });
     console.log('✅ Word saved successfully:', result);
     
+    // Test getting words list
+    console.log('\n4️⃣ Testing get words list...');
+    const wordsList = await client.getWordsList('en', 0, 1, 20);
+    console.log('✅ Words list retrieved successfully:', wordsList);
+    console.log(`   Found ${wordsList.length} words`);
+    
     console.log('\n🎉 All tests passed!');
     
   } catch (error) {

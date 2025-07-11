@@ -18,6 +18,19 @@ export interface SaveWordResponse {
   [key: string]: any;
 }
 
+export interface WordItem {
+  word: string;
+  exp?: string;
+  add_time: string;
+  star: number;
+  context_line?: string;
+}
+
+export interface GetWordsResponse {
+  data: WordItem[];
+  message: string;
+}
+
 export class EudicClient {
   constructor(private config: EudicConfig) {}
 
@@ -54,6 +67,42 @@ export class EudicClient {
       return result;
     } catch (error) {
       throw new Error(`Failed to save word: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  async getWordsList(
+    language: string = 'en',
+    categoryId: number = 0,
+    page: number = 1,
+    pageSize: number = 20
+  ): Promise<string[]> {
+    const headers = {
+      'User-Agent': this.config.userAgent,
+      'Authorization': this.config.authorizationToken,
+    };
+
+    try {
+      const url = new URL(`${this.config.apiBaseUrl}/api/open/v1/studylist/words/0`);
+      url.searchParams.set('language', language);
+      url.searchParams.set('category_id', categoryId.toString());
+      url.searchParams.set('page', page.toString());
+      url.searchParams.set('page_size', pageSize.toString());
+
+      const response = await fetch(url.toString(), {
+        method: 'GET',
+        headers
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result: GetWordsResponse = await response.json();
+      
+      // Return array of words only
+      return result.data.map(item => item.word);
+    } catch (error) {
+      throw new Error(`Failed to get words list: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 }

@@ -16,7 +16,7 @@ import { EudicClient, SaveWordRequest } from './client.js';
 const server = new Server(
   {
     name: 'eudic-mcp',
-    version: '0.1.0',
+    version: '0.2.0',
   },
   {
     capabilities: {
@@ -64,6 +64,39 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
           required: ['word']
         }
+      },
+      {
+        name: 'get_words_list',
+        description: 'Get a list of words from Eudic study list',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            language: {
+              type: 'string',
+              description: 'Language of the words to retrieve',
+              default: 'en'
+            },
+            category_id: {
+              type: 'number',
+              description: 'Category ID to filter words',
+              default: 0
+            },
+            page: {
+              type: 'number',
+              description: 'Page number for pagination',
+              minimum: 1,
+              default: 1
+            },
+            page_size: {
+              type: 'number',
+              description: 'Number of words per page',
+              minimum: 1,
+              maximum: 100,
+              default: 20
+            }
+          },
+          required: []
+        }
       }
     ]
   };
@@ -106,6 +139,38 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           {
             type: 'text',
             text: `Error saving word to Eudic: ${error instanceof Error ? error.message : String(error)}`
+          }
+        ]
+      };
+    }
+  } else if (name === 'get_words_list') {
+    try {
+      const config = getConfig();
+      const client = new EudicClient(config);
+      
+      const wordsArgs = args || {};
+      
+      const wordsList = await client.getWordsList(
+        wordsArgs.language as string | undefined,
+        wordsArgs.category_id as number | undefined,
+        wordsArgs.page as number | undefined,
+        wordsArgs.page_size as number | undefined
+      );
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Retrieved ${wordsList.length} words from Eudic study list: [${wordsList.join(', ')}]`
+          }
+        ]
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Error getting words list from Eudic: ${error instanceof Error ? error.message : String(error)}`
           }
         ]
       };

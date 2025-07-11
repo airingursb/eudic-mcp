@@ -5,6 +5,7 @@ A Model Context Protocol (MCP) server that provides tools for managing words in 
 ## Features
 
 - **save_word**: Save words to your Eudic study list with context and categorization
+- **get_words_list**: Retrieve a list of words from your Eudic study list
 
 ## Installation
 
@@ -138,6 +139,28 @@ Save a word to your Eudic study list.
   "category_ids": [0, 1]
 }
 ```
+
+#### get_words_list
+
+Retrieve a list of words from your Eudic study list.
+
+**Parameters:**
+- `language` (optional): Language of the words to retrieve (default: "en")
+- `category_id` (optional): Category ID to filter words (default: 0)
+- `page` (optional): Page number for pagination (default: 1)
+- `page_size` (optional): Number of words per page, max 100 (default: 20)
+
+**Example:**
+```json
+{
+  "language": "en",
+  "category_id": 0,
+  "page": 1,
+  "page_size": 20
+}
+```
+
+**Returns:** An array of word strings from your study list.
 
 ## Getting Your Authorization Token
 

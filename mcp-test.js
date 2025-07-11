@@ -78,6 +78,22 @@ async function testMCPProtocol() {
     }) + '\n');
 
     await setTimeout(2000);
+
+    console.log('\n4️⃣ Calling get_words_list tool...');
+    child.stdin.write(JSON.stringify({
+      jsonrpc: "2.0",
+      id: 4,
+      method: "tools/call",
+      params: {
+        name: "get_words_list",
+        arguments: {
+          language: "en",
+          page_size: 10
+        }
+      }
+    }) + '\n');
+
+    await setTimeout(2000);
     
     child.kill();
     console.log('\n✅ MCP Protocol test completed!');
