@@ -8,7 +8,15 @@ A Model Context Protocol (MCP) server that provides tools for managing words in 
 
 ## Installation
 
-### From npm (recommended)
+### Using npx (recommended)
+
+No installation required! Just use:
+
+```bash
+npx eudic-mcp
+```
+
+### Global installation
 
 ```bash
 npm install -g eudic-mcp
@@ -59,6 +67,12 @@ cp .env.example .env
 
 ### Running the Server
 
+Using npx:
+```bash
+EUDIC_AUTH_TOKEN="NIS your_token_here" npx eudic-mcp
+```
+
+Or if globally installed:
 ```bash
 eudic-mcp
 ```
@@ -72,6 +86,22 @@ npm run dev
 
 Add this to your MCP client configuration (e.g., Claude Desktop):
 
+#### Using npx:
+```json
+{
+  "mcpServers": {
+    "eudic": {
+      "command": "npx",
+      "args": ["eudic-mcp"],
+      "env": {
+        "EUDIC_AUTH_TOKEN": "NIS your_token_here"
+      }
+    }
+  }
+}
+```
+
+#### Using global installation:
 ```json
 {
   "mcpServers": {

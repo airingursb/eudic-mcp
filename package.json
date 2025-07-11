@@ -1,12 +1,18 @@
 {
   "name": "eudic-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP Server for Eudic word management",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
     "eudic-mcp": "dist/index.js"
   },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE",
+    ".env.example"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
